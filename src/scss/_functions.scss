@@ -1,0 +1,33 @@
+@import './variables';
+
+@function add($some-number, $another-number){
+  @return $some-number + $another-number
+};
+
+@function round-width ($i) {
+  $width : floor(100 * $i * 100/ $grid-columns) / 100;
+  @return $width#{"%"};
+};
+
+@function quick-sort($list) {
+  $less:  ();
+  $equal: ();
+  $large: ();
+
+  @if length($list) > 1 {
+    $seed: nth($list, ceil(length($list) / 2));
+    @each $item in $list {
+      @if (nth($item, 3) == nth($seed, 3)) {
+        $equal: append($equal, $item);
+      } @else if (nth($item, 3) < nth($seed, 3)) {
+        $less: append($less, $item);
+      } @else if (nth($item, 3) > nth($seed, 3)) {
+        $large: append($large, $item);
+      }
+    }
+
+    @return join(join(quick-sort($less), $equal), quick-sort($large));
+  }
+
+  @return $list;
+};

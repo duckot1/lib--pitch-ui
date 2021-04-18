@@ -1,0 +1,19 @@
+@font-face {
+    font-family: 'MarkPro';
+    src: url('./assets/fonts/MarkPro-Book.woff2') format('woff2'),
+        url('./assets/fonts/MarkPro-Book.woff') format('woff'),
+        url('./assets/fonts/MarkPro-Book.svg#MarkPro-Book') format('svg'),
+        url('./assets/fonts/MarkPro-Book.ttf') format('ttf');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'MarkPro';
+    src: url('./assets/fonts/MarkPro-Bold.woff2') format('woff2'),
+        url('./assets/fonts/MarkPro-Bold.woff') format('woff'),
+        url('./assets/fonts/MarkPro-Bold.svg#MarkPro-Bold') format('svg'),
+        url('./assets/fonts/MarkPro-Bold.ttf') format('ttf');
+    font-weight: bold;
+    font-style: normal;
+}

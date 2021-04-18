@@ -1,0 +1,92 @@
+/*=============== COLOURS ================= */
+$sportable-red: #F64645;
+$sportable-red-light: lighten( $sportable-red, 10% );
+$sportable-red-dark: darken($sportable-red, 10%);
+
+$sportable-black: #323233;
+$sportable-black-light: lighten( $sportable-black, 10% );
+$sportable-black-dark: darken($sportable-black, 10%);
+
+$sportable-white: #ffffff;
+$form-grey: #c5c4c8;
+
+$background: $sportable-white;
+$table-background1: #f6f5fa;
+$table-background2: #eeedf2;
+
+$color-success: #88c459;
+$color-error: #f5414f;
+$color-warning: #ffd137;
+
+/*=============== Typography ================= */
+
+$font-primary: 'MarkPro';
+$font-secondary: 'CircularStd';
+
+$h1: 32px;
+$h2: 30px;
+$h3: 24px;
+$h4: 20px;
+$body: 18px;
+
+$button-font-size: 18px;
+$button-plain-font-size: 13px;
+
+// Inputs
+$label-font: 12px;
+$input-font: 18px;
+
+$body-lineheight: 24px;
+
+$light-text: $sportable-white;
+$dark-text: $sportable-black;
+$red-text: $sportable-red;
+$grey-text: $form-grey;
+
+/*=============== Spacing ================= */
+
+$baseline: 30px;
+
+$space-xxs: $baseline / 4;
+$space-xs: $baseline / 3;
+$space-sm: $baseline / 2;
+$space-md: $baseline;
+$space-lg: $baseline * 2;
+$space-xl: $baseline * 3;
+
+$main-view-height: 100%;
+
+/*=============== Grid ================= */
+
+$grid-columns: 12;
+$grid-rows: 100;
+
+// BREAKPOINTS
+
+$desktop: 70em;
+$laptop: 64em;
+$tablet: 50em;
+$phablet: 37.5em;
+$mobileonly: 37.5em;
+
+/*=============== Icons ================= */
+
+$icon-xs: 15px;
+$icon-sm: 24px;
+$icon-md: 30px;
+$icon-lg: 48px;
+$icon-xl: 60px;
+
+/*=============== Buttons ================= */
+
+$button-radius: 5px;
+$button-height: 50px;
+$button-height-thin: 30px;
+
+$button-width: 150px;
+
+/*=============== Borders & shadows =========*/
+
+$light-border: 1px #e3e3e3 solid;
+$light-shadow-bottom: 0 2px 4px 0 rgba(0, 0, 0, 0.05);
+$light-shadow-top: 0 -2px 4px 0 rgba(0, 0, 0, 0.05);

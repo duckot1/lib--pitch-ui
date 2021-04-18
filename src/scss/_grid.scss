@@ -1,0 +1,67 @@
+@import './variables';
+@import './functions';
+
+/*********************
+BREAKPOINTS
+*********************/
+
+ @mixin breakpoint($point) {
+   @if $point == desktop {
+     @media (min-width: $desktop) { @content ; }
+  }
+   @else if $point == laptop {
+     @media (min-width: $laptop) { @content ; }
+  }
+    @else if $point == tablet {
+     @media (min-width: $tablet) { @content ; }
+  }
+   @else if $point == phablet {
+     @media (min-width: $phablet)  { @content ; }
+  }
+  @else if $point == mobileonly {
+     @media (max-width: $mobileonly)  { @content ; }
+  }
+}
+
+// Grid mixins
+
+@mixin grid($gap-horizontal, $gap-vertical) {
+  @supports(grid-area: auto) {
+    display: grid;
+    grid-column-gap: $gap-horizontal;
+    grid-row-gap: $gap-vertical;
+  }
+}
+
+@mixin gridLayout($cols...) {
+  @supports(grid-area: auto) {
+    @include breakpoint(tablet) {
+      grid-template-columns: repeat($grid-columns, 1fr);
+      grid-template-rows: repeat($grid-rows, 1fr);
+      display: grid;
+      $i: 1;
+      @each $col in $cols {
+        > :nth-of-type(#{$i}) {
+          grid-column-end: span nth($col,1);
+          @if length($col) > 1 {
+            grid-row-end: span nth($col,2);
+          }
+        }
+        $i: $i + 1;
+      }
+    }
+  }
+}
+
+@mixin gridAuto($min-width) {
+  @supports(grid-area: auto) {
+    grid-template-columns: repeat(auto-fill, minmax($min-width, 1fr));
+  }
+}
+
+@mixin flexGrid($gap-horizontal, $gap-vertical) {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: $gap-vertical $gap-horizontal;
+}

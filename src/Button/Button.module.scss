@@ -1,0 +1,147 @@
+@import '../scss/variables';
+
+.close, .plus, .minus {
+  cursor: pointer;
+  padding: 10px;
+  svg {
+    g {
+      transition: stroke 0.5s;
+    }
+  }
+  &:hover {
+    svg {
+      g {
+        stroke: $sportable-red
+      }
+    }
+  }
+
+  .medium {
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+  }
+
+  .large {
+
+  }
+
+  .small {
+
+  }
+}
+
+.buttonContainer {
+  height: $button-height;
+  width: $button-width;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+:global {
+  .download-button {
+    background-image: url(../../../assets/img/download.svg);
+    background-size: 50px;
+    width: 50px;
+  }
+
+  .sportable-red {
+    color: $sportable-red;
+    font-size: 14px;
+  }
+
+  /* ============== Buttons ============= */
+
+  .button {
+    cursor: pointer;
+    font-family: $font-primary;
+    position: relative;
+    white-space: nowrap;
+    text-decoration: none;
+    line-height: 1;
+    padding: $space-xs $space-sm;
+    border-radius: $button-radius;
+    height: $button-height;
+    border: none;
+    width: $button-width;
+    text-align: center;
+  }
+
+  .btn--disabled {
+    opacity: 0.5;
+  }
+
+  .btn--long {
+    cursor: pointer;
+    width: 335px;
+  }
+
+  .btn--medium {
+    cursor: pointer;
+    width: 220px;
+  }
+
+  .btn--thin {
+    height: $button-height-thin !important;
+    font-size: 15px !important;
+    padding: 0;
+  }
+
+  .btn-full-width {
+    width: 100%;
+  }
+
+  .btn--primary {
+    cursor: pointer;
+    height: $button-height;
+    background: $sportable-red;
+    font-size: $button-font-size;
+    color: $sportable-white;
+    &:hover {
+      background: $sportable-red-dark;
+    }
+  }
+
+  .btn--disabled {
+    opacity: 0.5;
+  }
+
+  .btn--border {
+    cursor: pointer;
+    height: $button-height;
+    background: $sportable-white;
+    border: 2px $sportable-red solid;
+    font-size: $button-font-size;
+    &:hover {
+      border-color: $sportable-red-dark;
+    }
+  }
+
+  .link {
+    cursor: pointer;
+    color: $sportable-black;
+    font-size: $button-plain-font-size;
+    background: transparent;
+    width: auto;
+    padding: 0 !important;
+    height: auto;
+    &:hover {
+      font-weight: bold;
+    }
+  }
+
+  .btn--table {
+    cursor: pointer;
+    color: $sportable-red;
+    font-size: 13px;
+    background: transparent;
+    width: auto;
+    padding: 0 !important;
+    height: 14px;
+    &:hover {
+      font-weight: bold;
+    }
+  }
+}
