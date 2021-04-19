@@ -4,6 +4,7 @@
   "description": "",
   "main": "build/index.js",
   "module": "build/index.esm.js",
+  "repository": "https://github.com/duckot1/component-library.git",
   "files": [
     "build"
   ],
