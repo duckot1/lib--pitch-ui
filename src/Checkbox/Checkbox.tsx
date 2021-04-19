@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Motion, spring } from 'react-motion';
+// import { Motion, spring } from 'react-motion';
 
 // import styles from '../forms.scss';
 

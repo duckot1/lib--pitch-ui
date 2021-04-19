@@ -4,7 +4,7 @@ import { Row } from './Row'
 
 import { TableProps, TableHeader, TableRow, TableControl, HighlightRowCallback } from "./Table.types";
 
-import styles from './Table.module.scss'
+import * as styles from './Table.module.scss'
 
 import _ from 'lodash'
 

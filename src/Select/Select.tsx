@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import styles from './Select.module.scss';
+import * as styles from './Select.module.scss';
 import animation from '../assets/js/animations';
 
 import Scroller from '../Scroller/Scroller'

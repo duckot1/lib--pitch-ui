@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { TableHeader, TableRow, EditCell, UpdateCellValue, UpdateEditedRows, SetEditCell, HighlightRow } from "./Table.types";
+import { TableHeader, TableRow, EditCell, UpdateCellValue, UpdateRowsObject, SetEditCell, HighlightRow } from "./Table.types";
 import styles from './Table.module.scss';
 
 import { dataTypes } from './data_types.js'
@@ -16,13 +16,13 @@ interface TdStyle {
 interface RowProps {
   editCell: EditCell;
   item: TableRow;
-  updateCellValue: UpdateCellValue;
-  updateEditedRows: UpdateEditedRows;
-  setEditCell: SetEditCell;
-  highlightRow: HighlightRow;
   headers: TableHeader[];
-  highlightedRow: string;
-  isEditableTable: boolean;
+  updateCellValue?: UpdateCellValue;
+  updateEditedRows?: UpdateRowsObject;
+  setEditCell?: SetEditCell;
+  highlightRow?: HighlightRow;
+  highlightedRow?: string;
+  isEditableTable?: boolean;
 }
 
 export class Row extends Component<RowProps> {
