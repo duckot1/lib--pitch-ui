@@ -1,6 +1,6 @@
 {
   "name": "@duckot1/component-library",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "",
   "main": "build/index.js",
   "module": "build/index.esm.js",
