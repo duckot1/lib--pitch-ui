@@ -1,7 +1,7 @@
 {
   "name": "@duckot1/component-library",
   "version": "1.0.2",
-  "description": "",
+  "description": "Sportable React Component Library",
   "main": "build/index.js",
   "module": "build/index.esm.js",
   "dir": "build",
