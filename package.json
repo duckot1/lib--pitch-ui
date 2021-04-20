@@ -16,7 +16,7 @@
     "test:watch": "NODE_ENV=test jest --watch",
     "build": "rollup -c",
     "storybook": "start-storybook -p 6006 --no-manager-cache",
-    "storybook:export": "build-storybook"
+    "build-storybook": "build-storybook -o docs-build"
   },
   "author": "",
   "license": "ISC",
