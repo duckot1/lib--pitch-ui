@@ -17,10 +17,10 @@ export interface TableProps {
     setEditCell?: SetEditCell;
     updateCellValue?: UpdateCellValue;
     updateEditedRows?: UpdateRowsObject;
-    editedRows?: Rows;
+    editedRows?: RowsObject;
     updateDeletedRows?: UpdateRowsObject;
-    deletedRows?: Rows;
-    newRows?: TableRow[];
+    deletedRows?: RowsObject;
+    newRows?: RowsObject;
     isEditableTable?: boolean;
 }
 
@@ -104,6 +104,6 @@ export type UpdateRowsObject = (item: TableRow, key?: any, value?: any) => any
 
 export type SetEditCell = (rowId: string, headerKey: string, value: string) => void
 
-export interface Rows {
+export interface RowsObject {
     [tableId: string]: TableRow;
 }

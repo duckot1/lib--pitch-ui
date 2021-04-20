@@ -112,7 +112,7 @@ export class Table extends Component<TableProps, TableState> {
 
     let sortedData = this.sortData(data);
 
-    if (newRows) sortedData = [...newRows, ...sortedData]
+    if (newRows) sortedData = [...Object.values(newRows), ...sortedData]
 
     let containerStyle = {
       height: '100%'

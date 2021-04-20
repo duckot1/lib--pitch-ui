@@ -2,18 +2,25 @@ import React, { Component } from 'react'
 
 import { Table } from './Table'
 
-import { TableProps, EditCell, UpdateCellValue, SetEditCell, Rows, TableRow, UpdateRowsObject } from "./Table.types";
+import { TableProps, EditCell, UpdateCellValue, SetEditCell, RowsObject, TableRow, UpdateRowsObject } from "./Table.types";
 
 import _ from 'lodash'
 
 interface TableState {
   editCell: EditCell;
-  editedRows: Rows;
-  newRows: TableRow[];
-  deletedRows: Rows;
+  editedRows: RowsObject;
+  newRows: RowsObject;
+  deletedRows: RowsObject;
 }
 
-type SaveChanges = (newRows: TableRow[], editedRows: Rows, deletedRows: Rows) => void
+interface SaveData {
+  newData?: TableRow[];
+  editedRows: RowsObject;
+  newRows: RowsObject;
+  deletedRows: RowsObject;
+}
+
+type SaveChanges = (data: SaveData) => void
 
 interface EditableTableProps {
   saveChanges: SaveChanges;
@@ -27,7 +34,7 @@ export class EditableTable extends Component<TableProps & EditableTableProps, Ta
       value: null
     },
     editedRows: {},
-    newRows: [],
+    newRows: {},
     deletedRows: {}
   };
 
@@ -52,18 +59,33 @@ export class EditableTable extends Component<TableProps & EditableTableProps, Ta
   }
 
   updateEditedRows: UpdateRowsObject = (item, key, value) => {
-    const { editedRows } = this.state
+    const { editedRows, newRows } = this.state
     if (item[key] === value) return
-    this.setState({
-      editedRows: {
-        ...editedRows,
-        [item.tableId]: {
-          ...item,
-          highlightColor: 'rgba(0, 180, 0, 0.5)',
-          [key]: value
+
+    if (newRows[item.tableId]) {
+      this.setState({
+        newRows: {
+          ...newRows,
+          [item.tableId]: {
+            ...item,
+            [key]: value
+          }
         }
-      }
-    })
+      })
+    } else {
+      this.setState({
+        editedRows: {
+          ...editedRows,
+          [item.tableId]: {
+            ...item,
+            highlightColor: 'rgba(0, 180, 0, 0.5)',
+            [key]: value
+          }
+        }
+      })
+    }
+
+
   }
 
   addRow = () => {
@@ -71,8 +93,10 @@ export class EditableTable extends Component<TableProps & EditableTableProps, Ta
     const { newRows } = this.state
     const { headers, id } = this.props
 
+    const size = Object.keys(newRows).length;
+
     let newRow = {
-      tableId: `${newRows.length}-${id}-new`,
+      tableId: `${size}-${id}-new`,
       highlightColor: 'rgba(0, 180, 0, 0.5)',
     }
 
@@ -81,10 +105,10 @@ export class EditableTable extends Component<TableProps & EditableTableProps, Ta
     })
 
     this.setState({
-      newRows: [
+      newRows: {
         ...newRows,
-        newRow
-      ]
+        [newRow.tableId]: newRow
+      }
     })
   }
 
@@ -103,10 +127,14 @@ export class EditableTable extends Component<TableProps & EditableTableProps, Ta
 
   saveChanges = () => {
     const { newRows, editedRows, deletedRows } = this.state
-    this.props.saveChanges(newRows, editedRows, deletedRows)
+    const { data } = this.props
+
+    this.props.saveChanges({newRows, editedRows, deletedRows})
+
+    this.resetState()
   }
 
-  undoChanges = () => {
+  resetState = () => {
     this.setState({
       editCell: {
         headerKey: null,
@@ -114,7 +142,7 @@ export class EditableTable extends Component<TableProps & EditableTableProps, Ta
         value: null
       },
       editedRows: {},
-      newRows: [],
+      newRows: {},
       deletedRows: {}
     })
   }
@@ -146,7 +174,7 @@ export class EditableTable extends Component<TableProps & EditableTableProps, Ta
           {name: 'Delete row', callback: (item) => this.updateDeletedRows(item), hidden: false},
           {name: 'Add row', callback: () => this.addRow()},
           {name: 'Save changes', callback: () => this.saveChanges()},
-          {name: 'Undo changes', callback: () => this.undoChanges()}
+          {name: 'Undo changes', callback: () => this.resetState()}
         ]}
       />
     )

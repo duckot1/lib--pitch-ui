@@ -89,11 +89,10 @@ export const Editable = () => {
         headerFont={13}
         tableClass={'minimalistBlack'}
         className={'small-container'}
-        smallHead={true}
 
         id={'table'}
 
-        saveChanges={(newRows, editedRows, deletedRows) => {
+        saveChanges={({newRows, editedRows, deletedRows}) => {
             console.log(newRows, editedRows, deletedRows)
         }}
       />
