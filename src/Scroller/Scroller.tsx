@@ -13,8 +13,7 @@ interface ScrollerProps {
 }
 
 let borderStyle = {
-  borderBottom: '1px solid #e3e3e3',
-  // borderTop: '1px solid #e3e3e3'
+  borderBottom: '1px solid #e3e3e3'
 }
 
 class Scroller extends Component<ScrollerProps> {
