@@ -4,7 +4,6 @@
   "description": "Sportable React Component Library",
   "main": "build/index.js",
   "module": "build/index.esm.js",
-  "dir": "build",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/duckot1/component-library.git"
