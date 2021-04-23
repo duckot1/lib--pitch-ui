@@ -10,7 +10,7 @@ export default {
 
 export const Primary = () => {
     return (
-      <div style={{height: '400px'}}>
+      <div style={{height: '400px', border: '1px solid #e3e3e3'}}>
         <Scroller scrollerClass={'form-scroller'}>
           <div style={{height: '1000px'}}>Hello everyone!!</div>
         </Scroller>

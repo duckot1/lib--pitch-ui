@@ -84,8 +84,6 @@ export class EditableTable extends Component<TableProps & EditableTableProps, Ta
         }
       })
     }
-
-
   }
 
   addRow = () => {
