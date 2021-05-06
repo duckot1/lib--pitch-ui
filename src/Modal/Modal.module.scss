@@ -1,0 +1,138 @@
+@import "../scss/variables";
+
+.overlay {
+  background: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  z-index: 40;
+}
+
+.modalContainer {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99;
+}
+
+.wrapperHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.selectTeam {
+  background: #fff;
+  border-radius: 4px;
+  outline: none;
+  padding: 50px;
+  display: block;
+
+  h1 {
+    margin-top: 0;
+  }
+
+  >div:last-child {
+    margin-top: 20px;
+    width: 100%;
+    text-align: center
+  }
+}
+
+// ONE OF THESE IS NOW UNECESSARY
+.modalLarge {
+
+  background: #fff;
+  overflow: auto;
+  border-radius: 4px;
+  outline: none;
+  padding: 20px 80px;
+  display: block;
+}
+
+.modalSmall {
+
+  background: #fff;
+  overflow: auto;
+  border-radius: 4px;
+  outline: none;
+  padding: 50px;
+  display: block;
+}
+
+.modalTable {
+  height: 75vh;
+  background: #fff;
+  overflow: auto;
+  border-radius: 4px;
+  outline: none;
+  padding: 50px;
+  display: block;
+
+  > div {
+    height: 100%;
+  }
+}
+
+.modal-appear {
+  opacity: 0;
+}
+
+.modal-appear.modal-appear-active {
+  opacity: 0;
+}
+
+.modal-enter {
+  opacity: 0;
+}
+
+.modal-enter.modal-enter-active {
+  opacity: 1;
+  -webkit-transition: 0.3s ease-out;
+  -o-transition: 0.3s ease-out;
+  transition: 0.3s ease-out;
+}
+
+.modal-leave {
+  opacity: 1;
+}
+
+.modal-leave.modal-leave-active  {
+  opacity: 0;
+  -webkit-transition: 0.3s ease-out;
+  -o-transition: 0.3s ease-out;
+  transition: 0.3s ease-out;
+}
+
+.circular {
+  border-radius: 100%;
+  position: relative;
+  display: block;
+  height: 0px;
+  right: -140px;
+  top: -40px;
+  background: none;
+  color: $sportable-red;
+  font-size: $h1;
+  &:hover {
+    background: none;
+    font-weight: bold;
+  }
+}
+
+.animateUpModal {
+  background: $sportable-white;
+  height: 90%;
+  width: 100%;
+  position: fixed;
+  top: 100%;
+  z-index: 40;
+  border-radius: 6px 6px 0 0;
+}

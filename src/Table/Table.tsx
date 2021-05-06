@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 import { Row } from './Row'
 
-import { TableProps, TableHeader, TableRow, TableControl, HighlightRowCallback } from "./Table.types";
+import { TableProps, TableHeader, TableRow, RowsObject, TableControl, HighlightRowCallback } from "./Table.types";
 
 import * as styles from './Table.module.scss'
 
@@ -11,22 +11,44 @@ import _ from 'lodash'
 interface TableState {
   filterBy: string;
   order: string;
+  sortedData: TableRow[];
 }
 
 export class Table extends Component<TableProps, TableState> {
   state: TableState = {
     filterBy: '',
     order: '',
+    sortedData: []
   };
 
-  sortData = (data: TableRow[]) => {
+  componentDidMount() {
+
+    // const { data, newRows } = this.props
+    // let sortedData = this.sortData(data, newRows);
+    // this.setState({sortedData})
+  }
+
+  // componentDidUpdate(prevProps, prevState) {
+  //   const { data, newRows } = this.props
+  //   const { filterBy, order } = this.state
+  //
+  //   console.log(prevProps.newRows !== newRows)
+  //
+  //   if (prevState.filterBy !== filterBy || prevState.order !== order || prevProps.data !== data || prevProps.newRows !== newRows) {
+  //     let sortedData = this.sortData(data, newRows);
+  //     this.setState({sortedData})
+  //   }
+  //
+  // }
+
+  sortData = (data: TableRow[], newRows: RowsObject) => {
     const { filterBy, order } = this.state
     const { id } = this.props
     const { initialSortBy, initialOrder } = this.props.options
 
     // Assign Table Row IDs
-    data = data.map((row, index) => {
-      row.tableId = `${index}-${id}`
+    data = data.map((row) => {
+      row.tableId = `${row.id}-${id}`
       return row
     })
 
@@ -46,7 +68,9 @@ export class Table extends Component<TableProps, TableState> {
       return data.sort((initialOrder === 'dec') ? (a, b) => dec(a, b, initialSortBy) : (a, b) => asc(a, b, initialSortBy))
     }
 
-    return data.sort((order === 'dec') ? (a, b) => dec(a, b, filterBy) : (a, b) => asc(a, b, filterBy))
+    let sortedData = data.sort((order === 'dec') ? (a, b) => dec(a, b, filterBy) : (a, b) => asc(a, b, filterBy))
+
+    return sortedData
   }
 
   sortBy = (key: string) => {
@@ -109,8 +133,9 @@ export class Table extends Component<TableProps, TableState> {
   render() {
 
     const { data, headers, tableClass, id, controls, className, smallHead, newRows } = this.props
+    // const { sortedData } = this.state
 
-    let sortedData = this.sortData(data);
+    let sortedData = this.sortData(data, newRows);
 
     if (newRows) sortedData = [...Object.values(newRows), ...sortedData]
 

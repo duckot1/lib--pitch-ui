@@ -1,8 +1,5 @@
 export interface TableProps {
     options?: TableOptions;
-    /**
-     * Checks if the button should be disabled
-     */
     data: TableRow[];
     headers: TableHeader[];
     highlightRow?: HighlightRow;

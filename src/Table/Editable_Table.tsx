@@ -1,32 +1,38 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import csv from 'csvtojson'
+import { dataTypes } from './data_types'
+import * as modalActions from '../Modal/modalActions'
 
 import { Table } from './Table'
 
-import { TableProps, EditCell, UpdateCellValue, SetEditCell, RowsObject, TableRow, UpdateRowsObject } from "./Table.types";
+import FileInput from '../FileInput/FileInput'
+import { Button } from '../Button/Button'
 
-import _ from 'lodash'
+import { TableProps, EditCell, UpdateCellValue, SetEditCell, RowsObject, UpdateRowsObject } from "./Table.types";
 
 interface TableState {
   editCell: EditCell;
   editedRows: RowsObject;
   newRows: RowsObject;
   deletedRows: RowsObject;
+  saving: boolean;
+  csvFiles: FileList;
 }
 
-interface SaveData {
-  newData?: TableRow[];
-  editedRows: RowsObject;
-  newRows: RowsObject;
-  deletedRows: RowsObject;
-}
-
-type SaveChanges = (data: SaveData) => void
+type CreateRow = (data: RowsObject) => void
+type UpdateRow = (data: RowsObject) => Promise<any>
+type DeleteRow = (data: RowsObject) => Promise<any>
 
 interface EditableTableProps {
-  saveChanges: SaveChanges;
+  createRow: CreateRow;
+  updateRow: UpdateRow;
+  deleteRow: DeleteRow;
+  toggleModal: modalActions.ToggleModal;
 }
 
-export class EditableTable extends Component<TableProps & EditableTableProps, TableState> {
+class EditableTable extends Component<TableProps & EditableTableProps, TableState> {
+
   state: TableState = {
     editCell: {
       headerKey: null,
@@ -35,8 +41,15 @@ export class EditableTable extends Component<TableProps & EditableTableProps, Ta
     },
     editedRows: {},
     newRows: {},
-    deletedRows: {}
+    deletedRows: {},
+    saving: false,
+    csvFiles: null
   };
+
+  constructor(props) {
+    super(props);
+
+  }
 
   setEditCell: SetEditCell = (rowId, headerKey, value) => {
     this.setState({
@@ -123,13 +136,191 @@ export class EditableTable extends Component<TableProps & EditableTableProps, Ta
     })
   }
 
+  updateRowState = (responses, type: string) => {
+    let rejectedRows = {}
+    switch(type) {
+      case 'newRows':
+        let { [type]: newRows } = this.state
+        responses.forEach(response => {
+          if (response.status === 'rejected') rejectedRows[response.reason] = newRows[response.reason]
+        })
+        this.setState({
+          newRows: rejectedRows,
+
+        })
+        break
+      case 'editedRows':
+        const { [type]: editedRows } = this.state
+        responses.forEach(response => {
+          if (response.status === 'rejected') rejectedRows[response.reason] = editedRows[response.reason]
+        })
+        this.setState({
+          editedRows: rejectedRows
+        })
+        break
+      case 'deletedRows':
+        const { [type]: deletedRows } = this.state
+        responses.forEach(response => {
+          if (response.status === 'rejected') rejectedRows[response.reason] = deletedRows[response.reason]
+        })
+        this.setState({
+          deletedRows: rejectedRows
+        })
+        break
+      default:
+        break
+    }
+
+  }
+
+  saveCurrentRowState = (rowsArray, saveFunction, type, done) => {
+    Promise.allSettled(rowsArray.map(row => {
+
+      // Remove table props from row data
+      let newRow = {...row}
+      const tableId = row.tableId
+      delete newRow.tableId
+      delete newRow.highlightColor
+
+      return new Promise(function (resolve, reject) {
+        if (!saveFunction) reject()
+        let promise = saveFunction(newRow)
+        if (promise && promise.then) {
+          promise.then(response => {
+            resolve(tableId)
+          }).catch(e => {
+            console.log('=======================Unable to save data=====================')
+            reject(tableId)
+          })
+        } else {
+          resolve(tableId)
+        }
+      })
+    })).then(response => {
+      this.updateRowState(response, type)
+      done()
+    })
+  }
+
   saveChanges = () => {
     const { newRows, editedRows, deletedRows } = this.state
-    const { data } = this.props
+    let { data, createRow, updateRow, deleteRow } = this.props
 
-    this.props.saveChanges({newRows, editedRows, deletedRows})
+    this.setState({saving: true})
 
-    this.resetState()
+    let completed = 0
+
+    const saveCompleted = () => {
+      completed++
+      if (completed === 3) this.setState({saving: false})
+    }
+
+    const newRowsArray = Object.values(newRows)
+    this.saveCurrentRowState(newRowsArray, createRow, 'newRows', () => {
+      saveCompleted()
+    })
+
+    const editedRowsArray = Object.values(editedRows)
+    this.saveCurrentRowState(editedRowsArray, updateRow, 'editedRows', () => {
+      saveCompleted()
+    })
+
+    const deletedRowsArray = Object.values(deletedRows)
+    this.saveCurrentRowState(deletedRowsArray, deleteRow, 'deletedRows', () => {
+      saveCompleted()
+    })
+  }
+
+  openImportCSVModal = () => {
+    const ChildComponent = ({ handleProceed }) => {
+      return (
+        <div>
+          <FileInput
+            name="csvFile"
+            label="Select csv file..."
+            onChange={(name, files, fileName) => {
+              this.setState({
+                csvFiles: files
+              })
+            }}
+          />
+          <Button handleClick={handleProceed} className={'btn--primary'}>Import</Button>
+        </div>
+      )
+    }
+    this.props.toggleModal({
+      active: true,
+      type: 'confirm',
+      handleProceed: () => {
+        this.importCSVFile()
+        this.props.toggleModal({active: false})
+      },
+      handleClose: () => {
+        this.setState({csvFiles: null})
+        this.props.toggleModal({active: false})
+      },
+      ChildComponent: ChildComponent,
+      title: 'Import CSV',
+      className: 'modalSmall',
+      hideCancel: true,
+      wrapper: true
+    })
+  }
+
+  importCSVFile = () => {
+
+    const { csvFiles } = this.state
+
+    if (!csvFiles) return
+
+    const file = this.state.csvFiles[0]
+    if (file) {
+      let reader = new FileReader()
+      reader.readAsText(file, "UTF-8")
+      reader.onload = (evt) => {
+        csv()
+          .fromString(evt.target.result)
+          .then((csvRows) => {
+            this.addImportedCSVRows(csvRows)
+          })
+      }
+    }
+  }
+
+  addImportedCSVRows = (csvRows) => {
+    const { newRows } = this.state
+    const { headers, id } = this.props
+
+    let newCSVRows = {}
+
+    csvRows.forEach((csvRow, index) => {
+      const size = Object.keys(newRows).length + index + 1;
+
+      let newRow = {
+        tableId: `${size}-${id}-new`,
+        highlightColor: 'rgba(0, 180, 0, 0.5)',
+      }
+
+      headers.forEach(header => {
+        console.log(csvRow[header.key])
+        if (csvRow[header.key]) {
+          newRow[header.key] = dataTypes[header.type].parse(csvRow[header.key])
+        } else {
+          newRow[header.key] = header.defaultValue || null
+        }
+      })
+
+      newCSVRows[newRow.tableId] = newRow
+    })
+
+    console.log(newRows, newCSVRows)
+
+    this.setState({
+      newRows: {
+        ...newRows,
+        ...newCSVRows
+      }
+    })
   }
 
   resetState = () => {
@@ -146,36 +337,43 @@ export class EditableTable extends Component<TableProps & EditableTableProps, Ta
   }
 
   render() {
-    const { editCell, editedRows, newRows, deletedRows } = this.state
+    const { editCell, editedRows, newRows, deletedRows, saving } = this.state
     const { controls = [] } = this.props
 
     return (
-      <Table
-        {...this.props}
+      <React.Fragment>
+        <Table
+          {...this.props}
 
-        isEditableTable={true}
+          isEditableTable={true}
 
-        editCell={editCell}
-        setEditCell={this.setEditCell}
-        updateCellValue={this.updateCellValue}
+          editCell={editCell}
+          setEditCell={this.setEditCell}
+          updateCellValue={this.updateCellValue}
 
-        editedRows={editedRows}
-        updateEditedRows={this.updateEditedRows}
+          editedRows={editedRows}
+          updateEditedRows={this.updateEditedRows}
 
-        newRows={newRows}
+          newRows={newRows}
 
-        deletedRows={deletedRows}
-        updateDeletedRows={this.updateDeletedRows}
+          deletedRows={deletedRows}
+          updateDeletedRows={this.updateDeletedRows}
 
-        controls={[
-          ...controls,
-          {name: 'Delete row', callback: (item) => this.updateDeletedRows(item), hidden: false},
-          {name: 'Add row', callback: () => this.addRow()},
-          {name: 'Save changes', callback: () => this.saveChanges()},
-          {name: 'Undo changes', callback: () => this.resetState()}
-        ]}
-      />
+          controls={[
+            saving ? {name: 'Saving...', callback: () => {}} : {name: 'Save changes', callback: () => this.saveChanges()},
+            {name: 'Undo changes', callback: () => this.resetState()},
+            {name: 'Delete row', callback: (item) => this.updateDeletedRows(item), hidden: false},
+            {name: 'Add row', callback: () => this.addRow()},
+            {name: 'Import CSV', callback: () => this.openImportCSVModal()},
+            ...controls
+          ]}
+        />
+      </React.Fragment>
     )
   }
 }
+
+export default connect(null, modalActions)(EditableTable)
+
+
 

@@ -319,3 +319,33 @@ table.eventTable {
   height: 13px;
   border-radius: 3px;
 }
+
+.editableTableContainer {
+  position: relative;
+
+  .importCSVModalContainer {
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 1s;
+    background: rgba(0, 0, 0, 0.2);
+
+
+    .importCSVModal {
+      background: white;
+      height: 200px;
+      width: 300px;
+      box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05);
+      border-radius: 10px;
+    }
+  }
+}
+
+
