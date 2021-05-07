@@ -9,5 +9,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="app--hardware-management" />
+    <orderEntry type="module" module-name="app--match-tracker" />
   </component>
 </module>

@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/../../app--hardware-management/.idea/app--hardware-management.iml" filepath="$PROJECT_DIR$/../../app--hardware-management/.idea/app--hardware-management.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../app--broadcast-tool/.idea/app--match-tracker.iml" filepath="$PROJECT_DIR$/../../app--broadcast-tool/.idea/app--match-tracker.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/lib--sportable-react.iml" filepath="$PROJECT_DIR$/.idea/lib--sportable-react.iml" />
     </modules>
   </component>
