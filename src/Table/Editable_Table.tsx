@@ -278,8 +278,9 @@ class EditableTable extends Component<TableProps & EditableTableProps, TableStat
       let reader = new FileReader()
       reader.readAsText(file, "UTF-8")
       reader.onload = (evt) => {
+        const result: string = typeof evt.target.result === 'string' ? evt.target.result : Buffer.from(evt.target.result).toString()
         csv()
-          .fromString(evt.target.result)
+          .fromString(result)
           .then((csvRows) => {
             this.addImportedCSVRows(csvRows)
           })
