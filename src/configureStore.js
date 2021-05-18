@@ -1,5 +1,4 @@
-import { createStore, applyMiddleware, combineReducers } from 'redux'
-import { composeWithDevTools } from 'redux-devtools-extension'
+import { createStore, combineReducers } from 'redux'
 
 import modalReducer from './Modal/modalReducer'
 
@@ -11,8 +10,6 @@ const configureStore = () => createStore(combineReducers({
 
   // Hardware
   modal: modalReducer,
-}), composeWithDevTools(
-  applyMiddleware(),
-))
+}), ['Use redux'])
 
 export default configureStore
