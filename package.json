@@ -22,7 +22,6 @@
   "license": "ISC",
   "dependencies": {
     "gsap": "^3.6.1",
-    "csvtojson": "^2.0.10",
     "lodash": "^4.17.21"
   },
   "peerDependencies": {
