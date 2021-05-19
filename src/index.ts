@@ -1,7 +1,7 @@
 import { Table } from "./Table/Table";
 export { Table };
 
-import EditableTable from "./Table/Editable_Table";
+import { EditableTable } from "./Table/Editable_Table";
 export { EditableTable };
 
 import Scroller from "./Scroller/Scroller";
