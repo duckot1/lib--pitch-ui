@@ -32,7 +32,7 @@ interface EditableTableProps {
   toggleModal: modalActions.ToggleModal;
 }
 
-class EditableTable extends Component<TableProps & EditableTableProps, TableState> {
+export class EditableTable extends Component<TableProps & EditableTableProps, TableState> {
 
   state: TableState = {
     editCell: {
@@ -315,8 +315,6 @@ class EditableTable extends Component<TableProps & EditableTableProps, TableStat
       newCSVRows[newRow.tableId] = newRow
     })
 
-    console.log(newRows, newCSVRows)
-
     this.setState({
       newRows: {
         ...newRows,
@@ -366,7 +364,7 @@ class EditableTable extends Component<TableProps & EditableTableProps, TableStat
             {name: 'Undo changes', callback: () => this.resetState()},
             {name: 'Delete row', callback: (item) => this.updateDeletedRows(item), hidden: false},
             {name: 'Add row', callback: () => this.addRow()},
-            {name: 'Import CSV', callback: () => this.openImportCSVModal()},
+            {name: 'Import CSV', callback: () => this.openImportCSVModal(), hidden: !this.props.toggleModal},
             ...controls
           ]}
         />

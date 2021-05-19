@@ -113,7 +113,7 @@ export const Editable = () => {
     }, [updateTableAction])
 
     // Dummy request
-    const axiosRequest = (onSuccess, success) => {
+    const dummyRequest = (onSuccess, success) => {
         return new Promise(function(resolve, reject) {
             setTimeout(() => {
                 if (success) {
@@ -128,17 +128,17 @@ export const Editable = () => {
 
     // Returning a promise here will make the table wait until it successfully resolves before updating
     const createRow = (row) => {
-        return axiosRequest(() => setUpdateTableAction({payload: {...row}, type: 'CREATE'}), true)
+        return dummyRequest(() => setUpdateTableAction({payload: {...row}, type: 'CREATE'}), true)
     }
 
     // Returning a promise here will make the table wait until it successfully resolves before it updates
     const deleteRow = (row) => {
-        return axiosRequest(() => setUpdateTableAction({payload: {...row}, type: 'DELETE'}), true)
+        return dummyRequest(() => setUpdateTableAction({payload: {...row}, type: 'DELETE'}), true)
     }
 
     // Returning a promise here will make the table wait until it successfully resolves before updating
     const updateRow = (row) => {
-        return axiosRequest(() => setUpdateTableAction({payload: {...row}, type: 'UPDATE'}), false)
+        return dummyRequest(() => setUpdateTableAction({payload: {...row}, type: 'UPDATE'}), false)
     }
 
     return (
