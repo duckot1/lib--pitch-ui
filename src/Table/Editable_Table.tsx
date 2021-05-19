@@ -21,14 +21,23 @@ interface TableState {
   csvFiles: FileList;
 }
 
-type CreateRow = (data: RowsObject) => void
+type CreateRow = (data: RowsObject) => Promise<any>
 type UpdateRow = (data: RowsObject) => Promise<any>
 type DeleteRow = (data: RowsObject) => Promise<any>
 
+type RowSuccess = (data: RowsObject) => void
+type RowFailed = (data: RowsObject) => void
+
 interface EditableTableProps {
   createRow: CreateRow;
+  createRowSuccess: RowSuccess;
+  createRowFailed: RowFailed;
   updateRow: UpdateRow;
+  updateRowSuccess: RowSuccess;
+  updateRowFailed: RowFailed;
   deleteRow: DeleteRow;
+  deleteRowSuccess: RowSuccess;
+  deleteRowFailed: RowFailed;
   toggleModal: modalActions.ToggleModal;
 }
 
@@ -174,7 +183,7 @@ export class EditableTable extends Component<TableProps & EditableTableProps, Ta
 
   }
 
-  saveCurrentRowState = (rowsArray, saveFunction, type, done) => {
+  saveCurrentRowState = (rowsArray, saveFunction, success, failed, type, done) => {
     Promise.allSettled(rowsArray.map(row => {
 
       // Remove table props from row data
@@ -188,12 +197,15 @@ export class EditableTable extends Component<TableProps & EditableTableProps, Ta
         let promise = saveFunction(newRow)
         if (promise && promise.then) {
           promise.then(response => {
+            success(response.data)
             resolve(tableId)
           }).catch(e => {
             console.log('=======================Unable to save data=====================')
+            failed()
             reject(tableId)
           })
         } else {
+          success(newRow)
           resolve(tableId)
         }
       })
@@ -205,7 +217,7 @@ export class EditableTable extends Component<TableProps & EditableTableProps, Ta
 
   saveChanges = () => {
     const { newRows, editedRows, deletedRows } = this.state
-    let { data, createRow, updateRow, deleteRow } = this.props
+    let { data, createRow, createRowSuccess, createRowFailed, updateRow, updateRowSuccess, updateRowFailed, deleteRow, deleteRowSuccess, deleteRowFailed } = this.props
 
     this.setState({saving: true})
 
@@ -217,17 +229,17 @@ export class EditableTable extends Component<TableProps & EditableTableProps, Ta
     }
 
     const newRowsArray = Object.values(newRows)
-    this.saveCurrentRowState(newRowsArray, createRow, 'newRows', () => {
+    this.saveCurrentRowState(newRowsArray, createRow, createRowSuccess, createRowFailed, 'newRows', () => {
       saveCompleted()
     })
 
     const editedRowsArray = Object.values(editedRows)
-    this.saveCurrentRowState(editedRowsArray, updateRow, 'editedRows', () => {
+    this.saveCurrentRowState(editedRowsArray, updateRow, updateRowSuccess, updateRowFailed, 'editedRows', () => {
       saveCompleted()
     })
 
     const deletedRowsArray = Object.values(deletedRows)
-    this.saveCurrentRowState(deletedRowsArray, deleteRow, 'deletedRows', () => {
+    this.saveCurrentRowState(deletedRowsArray, deleteRow, deleteRowSuccess, deleteRowFailed, 'deletedRows', () => {
       saveCompleted()
     })
   }

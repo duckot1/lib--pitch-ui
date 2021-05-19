@@ -113,12 +113,11 @@ export const Editable = () => {
     }, [updateTableAction])
 
     // Dummy request
-    const dummyRequest = (onSuccess, success) => {
+    const dummyRequest = (success) => {
         return new Promise(function(resolve, reject) {
             setTimeout(() => {
                 if (success) {
                     resolve("Status 200")
-                    onSuccess()
                 } else {
                     reject("Request Failed")
                 }
@@ -128,17 +127,41 @@ export const Editable = () => {
 
     // Returning a promise here will make the table wait until it successfully resolves before updating
     const createRow = (row) => {
-        return dummyRequest(() => setUpdateTableAction({payload: {...row}, type: 'CREATE'}), true)
+        return dummyRequest(true)
+    }
+
+    const createRowSuccess = (data) => {
+        setUpdateTableAction({payload: {...data}, type: 'CREATE'})
+    }
+
+    const createRowFailed = () => {
+        console.log('row failed')
     }
 
     // Returning a promise here will make the table wait until it successfully resolves before it updates
     const deleteRow = (row) => {
-        return dummyRequest(() => setUpdateTableAction({payload: {...row}, type: 'DELETE'}), true)
+        return dummyRequest(true)
+    }
+
+    const deleteRowSuccess = (data) => {
+        setUpdateTableAction({payload: {...data}, type: 'DELETE'})
+    }
+
+    const deleteRowFailed = () => {
+        console.log('row failed')
     }
 
     // Returning a promise here will make the table wait until it successfully resolves before updating
     const updateRow = (row) => {
-        return dummyRequest(() => setUpdateTableAction({payload: {...row}, type: 'UPDATE'}), false)
+        return dummyRequest( false)
+    }
+
+    const updateRowSuccess = (data) => {
+        setUpdateTableAction({payload: {...data}, type: 'UPDATE'})
+    }
+
+    const updateRowFailed = () => {
+        console.log('row failed')
     }
 
     return (
@@ -165,8 +188,14 @@ export const Editable = () => {
             id={'table'}
 
             createRow={createRow}
+            createRowSuccess={createRowSuccess}
+            createRowFailed={createRowFailed}
             updateRow={updateRow}
+            updateRowSuccess={updateRowSuccess}
+            updateRowFailed={updateRowFailed}
             deleteRow={deleteRow}
+            deleteRowSuccess={deleteRowSuccess}
+            deleteRowFailed={deleteRowFailed}
           />
       </Provider>
     );
