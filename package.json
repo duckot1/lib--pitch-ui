@@ -1,6 +1,6 @@
 {
   "name": "@sportabletech/lib--sportable-react",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "Sportable React Component Library",
   "main": "build/index.js",
   "module": "build/index.esm.js",
@@ -22,6 +22,7 @@
   "license": "ISC",
   "dependencies": {
     "gsap": "^3.6.1",
+    "csvtojson": "^2.0.10",
     "lodash": "^4.17.21"
   },
   "peerDependencies": {

@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-// import csv from 'csvtojson'
 import { dataTypes } from './data_types'
 import * as modalActions from '../Modal/modalActions'
 
@@ -10,6 +9,8 @@ import FileInput from '../FileInput/FileInput'
 import { Button } from '../Button/Button'
 
 import { TableProps, EditCell, UpdateCellValue, SetEditCell, RowsObject, UpdateRowsObject } from "./Table.types";
+
+const csv = require('csvtojson')
 
 interface TableState {
   editCell: EditCell;
@@ -279,11 +280,11 @@ class EditableTable extends Component<TableProps & EditableTableProps, TableStat
       reader.readAsText(file, "UTF-8")
       reader.onload = (evt) => {
         const result: string = typeof evt.target.result === 'string' ? evt.target.result : Buffer.from(evt.target.result).toString()
-        // csv()
-        //   .fromString(result)
-        //   .then((csvRows) => {
-        //     this.addImportedCSVRows(csvRows)
-        //   })
+        csv()
+          .fromString(result)
+          .then((csvRows) => {
+            this.addImportedCSVRows(csvRows)
+          })
       }
     }
   }
