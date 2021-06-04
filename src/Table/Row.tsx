@@ -66,10 +66,7 @@ export class Row extends Component<RowProps> {
       width: header.width ? `${header.width}%` : `${100 / headers.length}%`,
     }
 
-
     const { item } = this.props
-
-    if (!header.type) header.type = 'text'
 
     if (header.type === 'component' && header.CustomComponent) {
       return (
@@ -79,17 +76,19 @@ export class Row extends Component<RowProps> {
       )
     }
 
-    let value = dataTypes[header.type].display(item[header.key])
-
     if (item.highlightColor) tdStyle.background = item.highlightColor
 
     if (header.type === 'color') {
       return (
         <td style={tdStyle}  key={index}>
-          <div style={{background: value}} className={styles.color}></div>
+          <div style={{background: item[header.key]}} className={styles.color}></div>
         </td>
       )
     }
+
+    if (!header.type) header.type = 'text'
+
+    let value = dataTypes[header.type].display(item[header.key])
 
     if (header.input) {
       const { editCell } = this.props
@@ -117,7 +116,6 @@ export class Row extends Component<RowProps> {
           </td>
         )
       } else if (header.input.type === 'select') {
-        console.log(header.input.selectOptions, value)
         let selectedOption = header.input.selectOptions.find(option => value === option.value)
         return (
           <td
