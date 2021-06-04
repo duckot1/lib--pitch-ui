@@ -1,3 +1,6 @@
+import { dataTypes } from './data_types'
+
+
 let editableTableDummyData = [
   {
     "id":413306978,
@@ -122,9 +125,16 @@ let editableTableDummyData = [
   }
 ]
 
+let options = [
+  {name: "player", value: "player"},
+  {name: "anchor", value: "anchor"},
+  {name: "ball", value: "ball"}
+]
+
 export function getEditableTableDummyData() {
   return editableTableDummyData.map(x => {
     x.serial = base32Encode(x.id)
+    x.type = dataTypes.eNum.parse(x.type, options)
     return x
   })
 }
@@ -149,20 +159,7 @@ export const editableTableHeaders = [
     "type": "text",
     "input": {
       "type": "select",
-      "selectOptions": [
-        {
-          "name": "anchor",
-          "value": "anchor"
-        },
-        {
-          "name": "player",
-          "value": "player"
-        },
-        {
-          "name": "ball",
-          "value": "ball"
-        }
-      ]
+      "selectOptions": options
     }
   },
   {

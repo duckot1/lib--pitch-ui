@@ -41,6 +41,20 @@ export const dataTypes = {
       return value
     }
   },
+  eNum: {
+    display: (value, options) => {
+      if (!value) return null
+      let option = options.find(option => option.value === value)
+      if (!option) return null
+      return option.name
+    },
+    parse: (value, options) => {
+      if (!value) return null
+      let option = options.find(option => option.name === value)
+      if (!option) return null
+      return option.value
+    }
+  },
   date: {
     display: (value) => {
 

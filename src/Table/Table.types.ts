@@ -1,3 +1,5 @@
+import {JSXElementConstructor} from "react";
+
 export interface TableProps {
     options?: TableOptions;
     data: TableRow[];
@@ -44,6 +46,7 @@ export interface TableHeader {
     input?: TableInput;
     headerColor?: string;
     width?: number;
+    CustomComponent: JSXElementConstructor<any>;
 }
 
 // Display function converts values to string to be displayed in the table cell

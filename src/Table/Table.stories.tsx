@@ -25,7 +25,7 @@ let standardTableData = [
 let standardTableHeaders = [
     {key: 'name', name: 'Name', width: 33},
     {key: 'height', name: 'Height', width: 33},
-    {key: 'age', name: 'Age', width: 33}
+    {key: 'age', name: 'Age', width: 33},
 ]
 
 export const Standard = () => {

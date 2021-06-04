@@ -6,7 +6,7 @@ import { dataTypes } from './data_types.js'
 
 /*====== Components ======*/
 import { Button } from '../Button/Button';
-// import Checkbox from '../../forms/form_inputs/checkbox';
+import Checkbox from '../Checkbox/Checkbox';
 
 interface TdStyle {
   width: string;
@@ -62,14 +62,24 @@ export class Row extends Component<RowProps> {
 
   renderCells = (header: TableHeader, index: number, headers: TableHeader[]) => {
 
-    const { item } = this.props
-
-    if (!header.type) header.type = 'text'
-    let value = dataTypes[header.type].display(item[header.key])
-
     let tdStyle: TdStyle = {
       width: header.width ? `${header.width}%` : `${100 / headers.length}%`,
     }
+
+
+    const { item } = this.props
+
+    if (!header.type) header.type = 'text'
+
+    if (header.type === 'component' && header.CustomComponent) {
+      return (
+        <td style={tdStyle}  key={index}>
+          <header.CustomComponent item={item} header={header} />
+        </td>
+      )
+    }
+
+    let value = dataTypes[header.type].display(item[header.key])
 
     if (item.highlightColor) tdStyle.background = item.highlightColor
 
@@ -107,6 +117,8 @@ export class Row extends Component<RowProps> {
           </td>
         )
       } else if (header.input.type === 'select') {
+        console.log(header.input.selectOptions, value)
+        let selectedOption = header.input.selectOptions.find(option => value === option.value)
         return (
           <td
             onDoubleClick={(e) => {
@@ -129,7 +141,7 @@ export class Row extends Component<RowProps> {
               </div>
               :
               <div className={`${header.type === 'number' ? styles.number : styles.text}`}>
-                <div className={styles.tableTextSmall}>{value}</div>
+                <div className={styles.tableTextSmall}>{selectedOption.name}</div>
               </div>
             }
           </td>
@@ -154,12 +166,13 @@ export class Row extends Component<RowProps> {
         return (
           <td style={tdStyle} key={index}>
             <div className={styles.center}>
-              {/*<Checkbox*/}
-              {/*    size='small'*/}
-              {/*    onClicked={(val) => {*/}
-              {/*      header.input.onChange(item, val)*/}
-              {/*    }}*/}
-              {/*    checked={value}/>*/}
+              <Checkbox
+                size='small'
+                onClicked={(val) => {
+                  header.input.onChange(item, val)
+                }}
+                checked={value}
+                input={{value}}/>
             </div>
           </td>
         )
