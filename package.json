@@ -1,6 +1,6 @@
 {
   "name": "@sportabletech/lib--sportable-react",
-  "version": "1.0.15",
+  "version": "1.0.16",
   "description": "Sportable React Component Library",
   "main": "build/index.js",
   "module": "build/index.esm.js",
