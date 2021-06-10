@@ -26,6 +26,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  height: 35px;
 }
 
 .selectTeam {
@@ -58,7 +59,7 @@
 }
 
 .modalSmall {
-
+  max-height: 80%;
   background: #fff;
   overflow: auto;
   border-radius: 4px;

@@ -68,15 +68,15 @@ export class Row extends Component<RowProps> {
 
     const { item } = this.props
 
+    if (item.highlightColor) tdStyle.background = item.highlightColor
+
     if (header.type === 'component' && header.CustomComponent) {
       return (
         <td style={tdStyle}  key={index}>
-          <header.CustomComponent item={item} header={header} />
+          <header.CustomComponent item={item} header={header} updateEditedRows={this.props.updateEditedRows} />
         </td>
       )
     }
-
-    if (item.highlightColor) tdStyle.background = item.highlightColor
 
     if (header.type === 'color') {
       return (

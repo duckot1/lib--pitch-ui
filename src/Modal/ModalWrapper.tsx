@@ -7,12 +7,14 @@ import { Close } from '../Button/Close'
 export default (props) => {
 
   return (
-    <div>
+    <React.Fragment>
       <div className={styles.wrapperHeader}>
         <h3>{props.title}</h3>
         <Close onClick={props.handleClose} size="medium"/>
       </div>
-      {props.children}
-    </div>
+      <div className={styles.wrapperContent}>
+        {props.children}
+      </div>
+    </React.Fragment>
   )
 }
