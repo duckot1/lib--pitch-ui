@@ -135,6 +135,7 @@ export function getEditableTableDummyData() {
   return editableTableDummyData.map(x => {
     x.serial = base32Encode(x.id)
     x.type = dataTypes.eNum.parse(x.type, options)
+    x.color = 'red'
     return x
   })
 }
@@ -152,6 +153,15 @@ export const editableTableHeaders = [
     "input": {
       "type": "text"
     }
+  },
+  {
+    "name": "Color",
+    "key": "color",
+    "type": "text",
+    "input": {
+      "type": "text"
+    },
+    color: true
   },
   {
     "name": "Type",

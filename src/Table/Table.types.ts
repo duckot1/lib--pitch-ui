@@ -46,7 +46,8 @@ export interface TableHeader {
     input?: TableInput;
     headerColor?: string;
     width?: number;
-    CustomComponent: JSXElementConstructor<any>;
+    CustomComponent?: JSXElementConstructor<any>;
+    color?: boolean;
 }
 
 // Display function converts values to string to be displayed in the table cell

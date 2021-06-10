@@ -122,7 +122,11 @@ export class EditableTable extends Component<TableProps & EditableTableProps, Ta
     }
 
     headers.forEach(header => {
-      newRow[header.key] = header.defaultValue || null
+      if (header.input && header.input.type === 'select') {
+        newRow[header.key] = header.input.selectOptions[0].value
+      } else {
+        newRow[header.key] = header.defaultValue || null
+      }
     })
 
     this.setState({

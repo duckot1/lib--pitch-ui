@@ -78,14 +78,6 @@ export class Row extends Component<RowProps> {
       )
     }
 
-    if (header.type === 'color') {
-      return (
-        <td style={tdStyle}  key={index}>
-          <div style={{background: item[header.key]}} className={styles.color}></div>
-        </td>
-      )
-    }
-
     if (!header.type) header.type = 'text'
 
     let value = dataTypes[header.type].display(item[header.key])
@@ -110,7 +102,12 @@ export class Row extends Component<RowProps> {
               </div>
               :
               <div className={`${header.type === 'number' ? styles.number : styles.text}`}>
-                <div className={styles.tableTextSmall}>{value}</div>
+                {header.color ?
+                  <div className={styles.colorContainer} style={{background: value, width: '100%', height: '14px'}}></div>
+                  :
+                  <div className={styles.tableTextSmall}>{value}</div>
+                }
+
               </div>
             }
           </td>
