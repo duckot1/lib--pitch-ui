@@ -85,6 +85,15 @@ export class Row extends Component<RowProps> {
     if (header.input) {
       const { editCell } = this.props
       if (header.input.type === 'text') {
+
+        const renderContent = (header) => {
+          if (header.color) {
+            return <div className={styles.colorContainer} style={{background: value, width: '100%', height: '14px'}}></div>
+          } else if (header.img) {
+            return <div className={styles.colorContainer} style={{background: value, width: '100%', height: '14px'}}></div>
+          }
+        }
+
         return (
           <td
             onDoubleClick={(e) => {
